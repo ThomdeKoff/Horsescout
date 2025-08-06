@@ -1,0 +1,74 @@
+# Paths
+paths:
+  converted_video: "../data/converted_video.mp4"
+  pose_estimation_output: "../data/frames_keyjoints.json"
+  movement_recognition_output: "../data/movements.json"
+  classification_output: "../data/classification.json"
+  visualizer_output: "../data/output_video.mp4"
+  pose_estimation_model: "../models/yolo_horsepose_s.pt"
+  movement_recognition_model: "../models/svm_movement_clf.pkl"
+  movement_recognition_scaler: "../models/svm_movement_clf_scaler.pkl"
+  jumping_horse_classification_model: "../models/svm_jumping_horse_clf.pkl"
+  jumping_horse_classification_scaler: "../models/svm_jumping_horse_clf_scaler.pkl"
+  rf_jumping_classification_model: "../models/rf_jumping_classification.pkl"
+  rf_jumping_classification_scaler: "../models/rf_jumping_classification_scaler.pkl"
+  running_horse_classification_model: "../models/svm_running_horse_clf.pkl"
+  running_horse_classification_scaler: "../models/svm_running_horse_clf_scaler.pkl"
+
+# Horse Pose estimation
+keyjoints_configuration:
+  keyjoints_order: 
+    - forehead
+    - nose
+    - throat
+    - withers
+    - frontElbow right
+    - frontElbow left
+    - backElbow right
+    - backElbow left
+    - frontKnee right
+    - frontKnee left
+    - backKnee left
+    - backKnee right
+    - flank
+    - dock
+    - shoulder right
+    - shoulder left
+    - frontHoof right
+    - frontHoof left
+    - backHoof right
+    - backHoof left
+  skeleton_connections: 
+    - [0, 1]  # Forehead → Nose
+    - [1, 2]  # Nose → Throat
+    - [2, 3]  # Throat → Withers
+    - [0, 3]
+    - [3, 14]  # Withers → Shoulder Right
+    - [3, 15]  # Withers → Shoulder Left
+    - [14, 4]  # Shoulder Right → Front Elbow Right
+    - [15, 5]  # Shoulder Left → Front Elbow Left
+    - [4, 8]   # Front Elbow Right → Front Knee Right
+    - [5, 9]   # Front Elbow Left → Front Knee Left
+    - [8, 16]  # Front Knee Right → Front Hoof Right
+    - [9, 17]  # Front Knee Left → Front Hoof Left
+    - [12, 13] # Flank → Dock (Tail base)
+    - [12, 6]  # Flank → Back Elbow Right
+    - [12, 7]  # Flank → Back Elbow Left
+    - [13, 6]  # Dock -> Back Elbow Right
+    - [13, 7]  # Dock -> Back Elbow Left
+    - [6, 11]  # Back Elbow Right → Back Knee Right
+    - [7, 10]  # Back Elbow Left → Back Knee Left
+    - [11, 18] # Back Knee Right → Back Hoof Right
+    - [10, 19] # Back Knee Left → Back Hoof Left
+    - [12, 14] # Flank → Shoulder Right
+    - [12, 15] # Flank → Shoulder Left
+
+# Movement Detection
+sliding_window:
+  window_size: 20       # number of frames per window
+  stride: 10
+  skip_threshold: 20
+  probability_threshold: 0.05    
+movement_detection:
+  threshold: 0.6        # confidence threshold for detection    
+  classes: ["running", "jumping"]
